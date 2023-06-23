@@ -1,0 +1,103 @@
+app:
+  title: Scaffolded Backstage App
+  # Should be the same as backend.baseUrl when using the `app-backend` plugin.
+  baseUrl: http://localhost:7007
+
+organization:
+  name: ADM Group - Production
+
+backend:
+  # Note that the baseUrl should be the URL that the browser and other clients
+  # should use when communicating with the backend, i.e. it needs to be
+  # reachable not just from within the backend host, but from all of your
+  # callers. When its value is "http://localhost:7007", it's strictly private
+  # and can't be reached by others.
+  baseUrl: http://localhost:7007
+  # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
+  # all interfaces, the most permissive setting. The right value depends on your specific deployment.
+  listen: ':7007' 
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+  cors:
+    origin: http://localhost:7007
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+
+  # config options: https://node-postgres.com/api/client
+  database:
+    client: pg
+    connection:
+      host: 192.168.65.4
+      port: 5432
+      user: admin
+      password: secret
+    plugin:
+      auth:
+        connection:
+          database: backstage-poc-db
+      # https://node-postgres.com/features/ssl
+      # you can set the sslmode configuration option via the `PGSSLMODE` environment variable
+      # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
+      # ssl:
+      #   ca: # if you have a CA file and want to verify it you can uncomment this section
+      #     $file: <file-path>/ca/server.crt
+
+
+integrations:
+  github:
+    - host: github.com
+      # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
+      # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
+      token: ${GITHUB_TOKEN}
+    ### Example for how to add your GitHub Enterprise instance using the API:
+    # - host: ghe.example.net
+    #   apiBaseUrl: https://ghe.example.net/api/v3
+    #   token: ${GHE_TOKEN}
+
+proxy:
+  ### Example for how to add a proxy endpoint for the frontend.
+  ### A typical reason to do this is to handle HTTPS and CORS for internal services.
+  # '/test':
+  #   target: 'https://example.com'
+  #   changeOrigin: true
+
+# Reference documentation http://backstage.io/docs/features/techdocs/configuration
+# Note: After experimenting with basic setup, use CI/CD to generate docs
+# and an external cloud storage when deploying TechDocs for production use-case.
+# https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
+techdocs:
+  builder: 'local' # Alternatives - 'external'
+  generator:
+    runIn: 'docker' # Alternatives - 'local'
+  publisher:
+    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+
+auth:
+  # see https://backstage.io/docs/auth/ to learn about auth providers
+  environment: production
+  providers:
+    microsoft:
+      production:
+        clientId: b81945bb-de35-4665-bb67-b1ff8d6779b7
+        clientSecret: TrX8Q~IYNiuApg-ma_t1KuUEwHKeIQYfN6qHadm8
+        tenantId: 56fde7cf-3375-40c5-af46-8366f96d3066
+
+scaffolder:
+  # see https://backstage.io/docs/features/software-templates/configuration for software template options
+
+catalog:
+  import:
+    entityFilename: catalog-info.yaml
+    pullRequestBranchName: backstage-integration
+  rules:
+    - allow: [Component, System, API, Resource, Location]
+  locations:   
+    # Following are the two ways of creating, configuring & storing OpenAI Swagger Specs
+    #======================================================================================
+    # 1. This creates and stores all the Backstage YAML files with Backstage source code
+    #- type: file
+    #  target: ../catalog-model/examples/all.yaml   
+
+    # 2. This creates and stores all the Backstage YAML files in our own desired Git repo and refer the YAML url as below
+    - type: url
+      target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml 

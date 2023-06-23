@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backstage-local
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backstage-local
+  template:
+    metadata:
+      labels:
+        app: backstage-local
+    spec:
+      containers:
+        - name: backstage-local
+          imagePullPolicy: Never
+          image: docker.io/library/backstage-local
+          ports:
+            - containerPort: 7007
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: backstage-local-service
+spec:
+  selector:
+    app: backstage-local
+  ports:
+    - port: 7007
