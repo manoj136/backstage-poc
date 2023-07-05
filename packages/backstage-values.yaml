@@ -43,7 +43,7 @@ backstage:
     techdocs:
       builder: 'local'   
       generator:
-        runIn: 'local'        
+        runIn: 'local'         
     catalog:  
       locations:    
         - type: url
