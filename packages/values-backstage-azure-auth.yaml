@@ -1,0 +1,44 @@
+backstage:  
+  extraEnvVars:
+    - name: 'APP_CONFIG_app_baseUrl'
+      value: 'https://{{ .Values.ingress.host }}'
+    - name: 'APP_CONFIG_backend_baseUrl'
+      value: 'https://{{ .Values.ingress.host }}'
+    - name: 'APP_CONFIG_backend_cors_origin'
+      value: 'https://{{ .Values.ingress.host }}'
+  installDir: /opt/app-root/src
+
+  extraContainers:
+    - name: azure-ad
+      args:
+        - -provider=microsoft    
+        - -http-address=
+        - -email-domain=*
+        - -upstream=http://localhost:7007      
+        - -cookie-secret="{{ default (randAlpha 32 | lower | b64enc) .Values.oauthProxy.cookieSecret }}"        
+        - -skip-auth-regex=^/metrics
+        - -skip-provider-button
+        - -request-logging=true      
+      ports:
+        - name: azure-ad
+          containerPort: 8888
+          protocol: TCP  
+  
+service:
+  annotations:
+    service.alpha.openshift.io/serving-cert-secret-name: backstage-tls
+  ports:
+    backend: 8888
+    targetPort: azure-ad
+
+serviceAccount:
+  create: true
+  annotations:
+    serviceaccounts.microsoft.io/auth-redirecturi.backstage: 'https://{{ .Values.ingress.host }}/oauth/callback'
+
+ingress:
+  enabled: true
+  host: backstage.apps.example.com
+ 
+oauthProxy:
+  cookieSecret: ''

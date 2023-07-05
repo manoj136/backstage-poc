@@ -1,0 +1,49 @@
+backstage: 
+  replicas: 1
+  appConfig:
+    app:      
+      title: Backstage   
+      baseUrl: http://localhost:7007
+    organization:
+      name: ADM Group - Minikubes    
+    backend:
+      baseUrl: http://localhost:7007
+      csp:
+        connect-src: ["'self'", 'http:', 'https:']
+        # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+        # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+      cors:
+        origin: http://localhost:7007
+        methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+        credentials: true
+      database:
+        client: pg
+        connection:
+          database: backstage_plugin_catalog
+          host: 192.168.65.4
+          port: 5432
+          user: admin
+          password: secret 
+    auth:
+    # see https://backstage.io/docs/auth/ to learn about auth providers
+      environment: production
+      providers:
+        microsoft:
+          production:
+            clientId: b81945bb-de35-4665-bb67-b1ff8d6779b7
+            clientSecret: TrX8Q~IYNiuApg-ma_t1KuUEwHKeIQYfN6qHadm8
+            tenantId: 56fde7cf-3375-40c5-af46-8366f96d3066
+    integrations:
+      github:
+        - host: github.com
+          # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
+          # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
+          token: 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   
+    techdocs:
+      builder: 'local'   
+      generator:
+        runIn: 'local'        
+    catalog:  
+      locations:    
+        - type: url
+          target: https://github.com/manoj136/backstage-poc/blob/main/packages/catalog-model/examples/all.yaml          
