@@ -1,13 +1,7 @@
 site_name: 'my-techdoc-sample'
 
 nav:
-  - Overview:
-    - Home: index.md
-
-markdown_extensions:
-  # ... other extensions 
-  - pymdownx.snippets:
-      check_paths: true
+  - Home: index.md
 
 plugins:
   - techdocs-core
