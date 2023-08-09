@@ -1,7 +1,8 @@
 site_name: 'my-techdoc-sample'
 
 nav:
-  - path: index.md
+  - Overview:
+    - Home: index.md
 
 plugins:
   - techdocs-core
