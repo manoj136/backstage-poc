@@ -4,5 +4,10 @@ nav:
   - Overview:
     - Home: index.md
 
+markdown_extensions:
+  # ... other extensions 
+  - pymdownx.snippets:
+      check_paths: true
+
 plugins:
   - techdocs-core
