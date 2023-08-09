@@ -14,7 +14,7 @@ metadata:
     - title: Discord Chat
       url: https://discord.com/invite/EBHEGzX
   annotations:    
-    backstage.io/techdocs-ref: dir:"C:\projects"
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: library
   owner: guest
