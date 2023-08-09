@@ -14,7 +14,7 @@ metadata:
     - title: Discord Chat
       url: https://discord.com/invite/EBHEGzX
   annotations:    
-    backstage.io/techdocs-ref: https://github.com/manoj136/backstage-poc/tree/main/packages/techdocs
+    backstage.io/techdocs-ref: url:https://github.com/manoj136/backstage-poc/tree/main/packages/techdocs
 spec:
   type: library
   owner: guest
