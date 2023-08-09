@@ -1,0 +1,9 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: aspnetcore-minimalapi-poc-service
+spec:
+  selector:
+    run: aspnetcore-minimalapi-poc-pod
+  ports:
+    - port: 5000

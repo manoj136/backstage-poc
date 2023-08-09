@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: az-blob-integration-minikube-poc-pvc
+  namespace: kube-system
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: az-blob-integration-minikube-poc-pv
+  storageClassName: az-blob-integration-minikube-poc-storage-blobfuse

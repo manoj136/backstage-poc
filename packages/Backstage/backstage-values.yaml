@@ -1,5 +1,8 @@
+global:
+  imageRegistry: manojkumar1980/backstage-adm
+  pullPolicy: IfNotPresent
 backstage: 
-  replicas: 1
+  replicas: 1  
   extraEnvVarsSecrets: ['postgress-secrets','backstage-secrets']    
   appConfig:
     app:      
@@ -18,14 +21,19 @@ backstage:
         methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
         credentials: true
       database:
-        client: pg       
+        client: pg  
+        ensureExists: true     
         connection:
           database: ${POSTGRES_DB}
           host: ${POSTGRES_HOST}
           port: ${POSTGRES_PORT}
           user: ${POSTGRES_USER}
-          password: ${POSTGRES_PASSWORD}
+          password: ${POSTGRES_PASSWORD}        
     auth:
+      microsoft:
+        clientId: ${AZURE_CLIENT_ID}
+        clientSecret: ${AZURE_CLIENT_SECRET}
+        tenantId: ${AZURE_TENANT_ID}
     # see https://backstage.io/docs/auth/ to learn about auth providers
       environment: production
       providers:
@@ -43,8 +51,8 @@ backstage:
     techdocs:
       builder: 'local'   
       generator:
-        runIn: 'local'         
-    catalog:  
+        runIn: 'local'           
+    catalog:      
       locations:    
         - type: url
           target: https://github.com/manoj136/backstage-poc/blob/main/packages/catalog-model/examples/all.yaml          

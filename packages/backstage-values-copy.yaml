@@ -1,6 +1,22 @@
 backstage: 
   replicas: 1
-  extraEnvVarsSecrets: ['postgress-secrets','backstage-secrets']    
+  extraEnvVarsSecrets: ['postgress-secrets','backstage-secrets'] 
+  extraVolumes:
+    - name: az-kv-secrets-volume-for-backstage
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          # Which SecretProviderClass is providing this volume?
+          secretProviderClass: azure-key-vault-integration-with-minikube
+        # This is the secret with the SP credentials, which 
+        # KSSCD will use to connect to the key vault 
+        nodePublishSecretRef:
+          name: keyvault-credentials
+  extraVolumeMounts:
+    - name: az-kv-secrets-volume-for-backstage
+      mountPath: "/app/az-kv-secrets-store"
+      readOnly: true  
   appConfig:
     app:      
       title: ${TITLE}   

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aspnetcore-minimalapi-debug-test-pod-deployment
+  labels:
+    app: aspnetcore-minimalapi-debug-test-pod
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      app: aspnetcore-minimalapi-debug-test-pod
+  template:
+    metadata:
+      labels:
+        app: aspnetcore-minimalapi-debug-test-pod
+    spec:
+      containers:
+      - name: aspnetcore-minimalapi-poc
+        imagePullPolicy: Always
+        image: docker.io/manojkumar1980/aspnetcore-minimalapi-poc
+        workingDir: "/aspnetcore/minimal-api/bin"
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - secretRef:
+            name: aspnetcore-minimalapi-debug-secrets
+        volumeMounts:
+        - name: azure-key-vault-integration-with-minikube-volume
+          mountPath: "/mnt/aspnetcore/minimalapi/secrets-store"
+          readOnly: true 
+        - name: aspnetcore-minimalapi-debug-test-pod-pv
+          mountPath: "/aspnetcore/minimal-api/bin"
+      volumes:         
+       - name: aspnetcore-minimalapi-debug-test-pod-pv        
+         hostPath:
+           path: "/aspnetcore/minimal-api/bin"
+      # The volume created by KSSCD. This block makes it available
+      # to the pod for mounting. It can be named anything we want.
+       - name: azure-key-vault-integration-with-minikube-volume      
+         csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            # Which SecretProviderClass is providing this volume?
+            secretProviderClass: aspnetcore-minikube-secret-provider
+          # This is the secret with the SP credentials, which 
+          # KSSCD will use to connect to the key vault 
+          nodePublishSecretRef:
+            name: keyvault-credentials
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: aspnetcore-minimalapi-poc-service
+spec:
+  type: ClusterIP
+  selector:    
+    app: aspnetcore-minimalapi-debug-test-pod
+  ports:
+    - port: 5000

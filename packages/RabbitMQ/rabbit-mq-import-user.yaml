@@ -1,0 +1,12 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: User
+metadata:
+  name: rabbit-mq-cluster-poc-import-user
+  namespace: rabbitmq-system
+spec:
+  tags:
+  - administrator
+  rabbitmqClusterReference:
+    name: rabbit-mq-cluster-poc
+  importCredentialsSecret:
+    name: rabbit-mq-cluster-poc-user-secret # name of the secret

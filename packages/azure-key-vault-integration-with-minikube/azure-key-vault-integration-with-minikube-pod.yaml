@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  # The pod we are creating
+  name: azure-key-vault-integration-with-minikube-pod
+  namespace: kube-system
+spec:  
+  containers:
+  - name: busybox
+    image: k8s.gcr.io/e2e-test-images/busybox:1.29
+    command:
+      - "/bin/sleep"
+      - "10000"
+    # Mount the above volume. This also makes our secrets
+    # available as files in the pod's filesystem. Crucially,
+    # this step also creates the Kubernetes secret we
+    # defined in the SecretProviderClass
+    volumeMounts:
+      - name: azure-key-vault-integration-with-minikube-volume
+        mountPath: "/mnt/secrets-store"
+        readOnly: true    
+  volumes:
+    # The volume created by KSSCD. This block makes it available
+    # to the pod for mounting. It can be named anything we want.
+    - name: azure-key-vault-integration-with-minikube-volume
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          # Which SecretProviderClass is providing this volume?
+          secretProviderClass: azure-key-vault-integration-with-minikube-sp
+        # This is the secret with the SP credentials, which 
+        # KSSCD will use to connect to the key vault 
+        nodePublishSecretRef:
+          name: keyvault-credentials
+    
+        

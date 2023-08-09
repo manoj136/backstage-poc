@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aspnetcore-minimalapi-debug-test-pod
+  namespace: default
+spec:
+  containers:   
+    - name: aspnetcore-minimalapi-poc
+      imagePullPolicy: Always
+      image: docker.io/manojkumar1980/aspnetcore-minimalapi-poc      
+      ports:
+        - containerPort: 5000     
+      env:
+        - name: POSTGRESQL_USER
+          value: 'echo "$(cat /mnt/aspnetcore/minimalapi/secrets-store/POSTGRES-USER)"'
+        - name: POSTGRESQL_PASSWORD
+          value: /mnt/aspnetcore/minimalapi/secrets-store/POSTGRES-PASSWORD            
+      envFrom:
+        - secretRef:
+            name: aspnetcore-minimalapi-debug-secrets
+      # Mount the above volume. This also makes our secrets
+    # available as files in the pod's filesystem. Crucially,
+    # this step also creates the Kubernetes secret we
+    # defined in the SecretProviderClass
+      volumeMounts:
+        - name: azure-key-vault-integration-with-minikube-volume
+          mountPath: "/mnt/aspnetcore/minimalapi/secrets-store"
+          readOnly: true 
+        - name: aspnetcore-minimalapi-debug-test-pod-pv
+          mountPath: "/mnt/secrets-store" 
+  volumes:
+    - name: aspnetcore-minimalapi-debug-test-pod-pv
+      hostPath:
+        path: /Users/ManojKumar/aspnetcore-minimal-api-poc
+    # The volume created by KSSCD. This block makes it available
+    # to the pod for mounting. It can be named anything we want.
+    - name: azure-key-vault-integration-with-minikube-volume      
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          # Which SecretProviderClass is providing this volume?
+          secretProviderClass: aspnetcore-minikube-secret-provider
+        # This is the secret with the SP credentials, which 
+        # KSSCD will use to connect to the key vault 
+        nodePublishSecretRef:
+          name: keyvault-credentials      

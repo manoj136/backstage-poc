@@ -1,0 +1,22 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: az-blob-integration-minikube-poc
+  namespace: kube-system
+spec:
+  nodeSelector:
+    "kubernetes.io/os": linux
+  containers:
+    - image: mcr.microsoft.com/oss/nginx/nginx:1.17.3-alpine
+      name: az-blob-integration-minikube-container-poc
+      command:
+        - "/bin/sh"
+        - "-c"
+        - while true; do echo $(date) >> /mnt/blob/outfile; sleep 1; done
+      volumeMounts:
+        - name: az-blob-integration-minikube-volume
+          mountPath: "/mnt/blob"
+  volumes:
+    - name: az-blob-integration-minikube-volume
+      persistentVolumeClaim:
+        claimName: az-blob-integration-minikube-poc-pvc
