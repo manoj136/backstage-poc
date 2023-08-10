@@ -1,14 +1,14 @@
 site_name: 'my-techdoc-sample'
 
-nav:  
-  - Overview:
-        - Overview: 'overview.md'
-        - Architecture overview: 'architecture-overview.md'
+# nav:  
+#   - Overview:
+#         - Overview: 'overview.md'
+#         - Architecture overview: 'architecture-overview.md'
     
-  - Getting Started:
-        - Getting Started: 'index.md'
-  - Local Development:
-        - Overview: 'development.md'
+#   - Getting Started:
+#         - Getting Started: 'index.md'
+#   - Local Development:
+#         - Overview: 'development.md'
       
   # - Home: index.md
   # - Overview: overview.md
