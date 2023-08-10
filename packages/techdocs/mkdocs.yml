@@ -1,9 +1,18 @@
 site_name: 'my-techdoc-sample'
 
-# nav:  
-#   - Home: index.md
-#   - Overview: overview.md
-#   - Development: development.md
+nav:  
+  - Overview:
+        - Overview: 'overview.md'
+        - Architecture overview: 'architecture-overview.md'
+    
+  - Getting Started:
+        - Getting Started: 'index.md'
+  - Local Development:
+        - Overview: 'development.md'
+      
+  # - Home: index.md
+  # - Overview: overview.md
+  # - Development: development.md
 
 plugins:
   - techdocs-core
