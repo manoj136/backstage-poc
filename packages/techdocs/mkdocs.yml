@@ -1,7 +1,11 @@
 site_name: 'my-techdoc-sample'
 
-# nav:
-#   - index: index.md
+nav:
+  - Home: index.md
+  - Overview: 
+      - Welcome: overview.md
+  - Development:
+      - Development: development.md
 
 plugins:
   - techdocs-core
