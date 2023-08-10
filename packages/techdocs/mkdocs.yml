@@ -5,8 +5,8 @@ nav:
         - Overview: 'overview.md'
         - Architecture overview: 'architecture-overview.md'
     
-  - Getting Started:
-        - Getting Started: 'index.md'
+  # - Getting Started:
+  #       - Getting Started: 'index.md'
   - Local Development:
         - Overview: 'development.md'
       
