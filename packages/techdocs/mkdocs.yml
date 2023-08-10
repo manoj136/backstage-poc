@@ -1,7 +1,6 @@
 site_name: 'my-techdoc-sample'
 
-nav:
-  - Home: index.md
+nav:  
   - Overview: 
       - Welcome: overview.md
   - Development:
