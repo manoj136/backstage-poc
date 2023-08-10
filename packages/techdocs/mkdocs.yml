@@ -1,7 +1,7 @@
 site_name: 'my-techdoc-sample'
 
-nav:
-  - index: index.md
+# nav:
+#   - index: index.md
 
 plugins:
   - techdocs-core
