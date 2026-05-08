@@ -1,4 +1,7 @@
 site_name: "articles"
 
 nav:
-  - home: index.md
+  - Home: index.md
+
+plugins:
+  - techdocs-core
