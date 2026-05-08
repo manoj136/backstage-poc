@@ -1,4 +1,4 @@
-site_name: articles
+site_name: "articles"
 
 nav:
   - Home: index.md
