@@ -1,4 +1,4 @@
 site_name: "articles"
 
-plugins:
-  - techdocs-core
+nav:
+  - home: index.md
