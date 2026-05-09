@@ -1,0 +1,12 @@
+apiVersion: mc.mastercard.com/v1alpha1
+kind: MCSandbox
+metadata:
+  name: payments-dev-sandbox
+  description: Mastercard payment sandbox
+spec:
+  owner: user:guest
+  lifecycle: development
+  environment: dev
+  region: us-east-1
+  accountId: "123456789"
+  clusterName: eks-dev-cluster
